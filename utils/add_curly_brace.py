@@ -140,7 +140,7 @@ def add_curly_brace(
     ax_xlim = list(ax.get_xlim())
     ax_ylim = list(ax.get_ylim())
 
-    # log scale consideration
+    # 对数
     if "log" in ax.get_xaxis().get_scale():
 
         if p1[0] > 0.0:
@@ -231,31 +231,28 @@ def add_curly_brace(
         pt1[1] = p1[1]
         pt2[1] = p2[1]
 
-    # get the ratio of pixels/length
+    # 获取像素/长度比率
     xscale = ax_width / abs(ax_xlim[1] - ax_xlim[0])
     yscale = ax_height / abs(ax_ylim[1] - ax_ylim[0])
 
-    # this is to deal with 'equal' axes aspects
+    # 处理“相等”坐标轴
     if bool_auto:
-
         pass
 
     else:
-
         xscale = 1.0
         yscale = 1.0
 
-    # convert length to pixels,
-    # need to minus the lower limit to move the points back to the origin. Then add the limits back on end.
+    # 将长度转换为像素，需要减去下限值，将点移回原点。然后在末尾加上下限值
     pt1[0] = (pt1[0] - ax_xlim[0]) * xscale
     pt1[1] = (pt1[1] - ax_ylim[0]) * yscale
     pt2[0] = (pt2[0] - ax_xlim[0]) * xscale
     pt2[1] = (pt2[1] - ax_ylim[0]) * yscale
 
-    # calculate the angle
+    # 计算角度
     theta = np.arctan2(pt2[1] - pt1[1], pt2[0] - pt1[0])
 
-    # calculate the radius of the arcs
+    # 计算圆弧的半径
     r = np.hypot(pt2[0] - pt1[0], pt2[1] - pt1[1]) * k_r
 
     # arc1 centre
@@ -274,14 +271,11 @@ def add_curly_brace(
     x44 = pt2[0] - r * np.cos(theta)
     y44 = pt2[1] - r * np.sin(theta)
 
-    # prepare the rotated
     q = np.linspace(theta, theta + np.pi / 2.0, 50)
 
-    # reverse q
-    # t = np.flip(q) # this command is not supported by lower version of numpy
     t = q[::-1]
 
-    # arc coordinates
+    # arc坐标
     arc1x = r * np.cos(t + np.pi / 2.0) + x11
     arc1y = r * np.sin(t + np.pi / 2.0) + y11
 
@@ -294,7 +288,7 @@ def add_curly_brace(
     arc4x = r * np.cos(t) + x44
     arc4y = r * np.sin(t) + y44
 
-    # convert back to the axis coordinates
+    # 转换回坐标轴坐标
     arc1x = arc1x / xscale + ax_xlim[0]
     arc2x = arc2x / xscale + ax_xlim[0]
     arc3x = arc3x / xscale + ax_xlim[0]
@@ -305,7 +299,7 @@ def add_curly_brace(
     arc3y = arc3y / yscale + ax_ylim[0]
     arc4y = arc4y / yscale + ax_ylim[0]
 
-    # log scale consideration
+    # 对数
     if "log" in ax.get_xaxis().get_scale():
 
         for i in range(0, len(arc1x)):
@@ -430,17 +424,16 @@ def add_curly_brace(
 
         pass
 
-    # plot arcs
+    # 绘制弧线
     ax.plot(arc1x, arc1y, **kwargs)
     ax.plot(arc2x, arc2y, **kwargs)
     ax.plot(arc3x, arc3y, **kwargs)
     ax.plot(arc4x, arc4y, **kwargs)
 
-    # plot lines
+    # 绘制直线
     ax.plot([arc1x[-1], arc2x[1]], [arc1y[-1], arc2y[1]], **kwargs)
     ax.plot([arc3x[-1], arc4x[1]], [arc3y[-1], arc4y[1]], **kwargs)
 
-    # newly modified
     summit = [arc2x[-1], arc2y[-1]]
 
     if str_text:
@@ -449,16 +442,14 @@ def add_curly_brace(
 
         str_temp = "\n" * int_line_num
 
-        # convert radians to degree and within 0 to 360
+        # 将弧度转换为角度，范围为 0 到 360 度
         ang = np.degrees(theta) % 360.0
 
-        # Handle text_offset parameter
+        # 处理 text_offset 参数
         if isinstance(text_offset, (list, tuple)) and len(text_offset) == 2:
-            # Direct x, y offset
             text_x = arc2x[-1] + text_offset[0]
             text_y = arc2y[-1] + text_offset[1]
         else:
-            # Single value offset perpendicular to bracket
             text_x = arc2x[-1] + text_offset * np.sin(theta)
             text_y = arc2y[-1] - text_offset * np.cos(theta)
 

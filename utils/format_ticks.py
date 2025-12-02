@@ -81,43 +81,41 @@ def format_ticks(
         """Factory function for tick formatters"""
 
         def format_func(value, _):
-            # Handle zero formatting
+            # 处理零格式
             if zero_format and abs(value) < 1e-10:
                 return f"{prefix}0{suffix}"
 
-            # Handle scientific notation
+            # 处理科学计数法
             if scientific is not None and scientific:
                 fmt = f".{precision}e" if precision is not None else "e"
                 s = format(value, fmt)
             else:
-                # Handle normal formatting with precision
                 if precision is not None:
-                    # Special handling for integers
+                    # 整数的特殊处理
                     if precision == 0:
                         s = f"{int(round(value))}"
                     else:
                         s = f"{value:.{precision}f}"
                 else:
-                    # Auto-detect best format
+                    # 自动检测最佳格式
                     s = str(value)
                     if "." in s:
                         s = s.rstrip("0").rstrip(".") if s.endswith("0") else s
 
-            # Apply thousands separator if enabled
+            # 如果启用，则应用千位分隔符
             if thousands_separator and (scientific is None or not scientific):
-                if "e" not in s:  # Skip scientific notation
+                if "e" not in s:  
                     parts = s.split(".")
-                    # Format integer part with commas
+                    # 用逗号分隔整数部分
                     if parts[0].lstrip("-").isdigit():
                         parts[0] = "{:,}".format(int(parts[0]))
-                    # Rejoin with decimal if exists
                     s = ".".join(parts) if len(parts) > 1 else parts[0]
 
             return f"{prefix}{s}{suffix}"
 
         return ticker.FuncFormatter(format_func)
 
-    # Configure x-axis
+    # 配置x轴
     if any(
         [
             x_zero_format,
@@ -139,7 +137,7 @@ def format_ticks(
             )
         )
 
-    # Configure y-axis
+    # 配置y轴
     if any(
         [
             y_zero_format,

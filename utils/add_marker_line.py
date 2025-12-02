@@ -261,11 +261,11 @@ def _align_params(params: dict[str, Any]) -> tuple[dict[str, list[Any]], int]:
 
     def _to_list(value: Any) -> list:
         """将输入值转换为列表，保护字符串不被拆分"""
-        if isinstance(value, str):  # 字符串保持整体
+        if isinstance(value, str):  
             return [value]
         elif isinstance(value, (list, tuple, np.ndarray)):
             return list(value)
-        else:  # 数值、布尔等单值
+        else:  
             return [value]
 
     # 统一转为列表

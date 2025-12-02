@@ -69,11 +69,11 @@ def add_line(
         >>> # Figure-relative line (spanning entire figure)
         >>> add_line(ax, [0.2, 0.8], [0.1, 0.9], transform='figure')
     """
-    # Convert inputs to numpy arrays
+    # 将输入转换为 numpy 数组
     x = np.asarray(x)
     y = np.asarray(y)
 
-    # Handle coordinate transforms
+    # 处理坐标变换
     if transform is None or transform == "data":
         transform = ax.transData
     elif transform == "axes":
@@ -81,7 +81,7 @@ def add_line(
     elif transform == "figure":
         transform = ax.figure.transFigure
     elif transform == "display":
-        transform = None  # Pixel coordinates
+        transform = None  # 像素坐标
     else:
         raise ValueError(
             "transform must be one of: 'data', 'axes', 'figure', 'display'"
@@ -101,7 +101,7 @@ def add_line(
 
     ax.add_line(line)
 
-    # Auto-scale if in data coordinates
+    # 如果采用数据坐标系，则自动缩放
     if transform == ax.transData:
         ax.relim()
         ax.autoscale_view()
