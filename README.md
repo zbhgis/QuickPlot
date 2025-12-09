@@ -1,8 +1,10 @@
 # QuickPlot
 
+## 项目说明
+
 通过 numpy，matplotlib 和 seaborn 等数据处理和绘图包，复现一些没提供原始 Python 代码的顶刊图表。
 
-## 说明
+## 目录说明
 
 plot 文件夹中放置的是绘图的主要代码；utils 文件夹中放置的是绘图的工具函数。
 
@@ -28,7 +30,7 @@ Parent module 'utils' not loaded, cannot perform relative import
 
 在 VS Code 中，在仓库目录下新建文件夹，命名为 .vscode
 
-在 .vscode 文件夹下，新建问价，命名为 settings.json
+在 .vscode 文件夹下，新建文件，命名为 settings.json
 
 在其中输入以下内容后保存即可，之后重启 Python 解释器或者 VS Code
 
