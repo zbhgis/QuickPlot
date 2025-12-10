@@ -205,6 +205,12 @@ if __name__ == "__main__":
         fontsize=18,
     )
 
+    # 导出为jpg文件，默认在当前路径下
     utils.export_fig()
-    # 直接用plt.show()会导致比例失常，所以得看最终导出的图。
+    # 导出为指定路径下的指定文件名的tiff文件，dpi为500
+    # utils.export_fig(
+    #     formats="tiff", output_path=r"C:\Users\dell\Desktop\test.tiff", dpi=500
+    # )
+
+    # # 直接用plt.show()会导致比例失常，所以得看最终导出的图。
     # plt.show()
